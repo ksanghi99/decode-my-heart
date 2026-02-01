@@ -138,10 +138,10 @@ function loadQuestion(index) {
     feedbackMessage.style.color = '#ff006e';
     nextBtn.disabled = true;
     
-    // Create option buttons
+    // Create option buttons - ALL SAME COLOR INITIALLY
     question.options.forEach((option, optionIndex) => {
         const button = document.createElement('button');
-        button.className = `option-btn ${option.type}`;
+        button.className = 'option-btn';
         button.innerHTML = `
             <div class="option-emoji">${option.emoji}</div>
             <div class="option-text">${option.text}</div>
@@ -154,11 +154,9 @@ function loadQuestion(index) {
 
 // =================== SELECT OPTION ===================
 function selectOption(button, optionIndex, type) {
-    if (selectedOption !== null) return; // Prevent re-selection
+    if (selectedOption !== null) return;
     
     selectedOption = button;
-    
-    // Add selected class to clicked button
     button.classList.add('selected');
     
     // Disable all buttons
@@ -166,10 +164,12 @@ function selectOption(button, optionIndex, type) {
         btn.disabled = true;
     });
     
-    // Check answer
+    // Show result with color change
     if (type === 'plausible') {
+        button.classList.add('correct');
         handleCorrectAnswer();
     } else {
+        button.classList.add('incorrect');
         handleWrongAnswer();
     }
     
@@ -180,8 +180,6 @@ function selectOption(button, optionIndex, type) {
 function handleCorrectAnswer() {
     score++;
     streak++;
-    
-    selectedOption.classList.add('correct');
     
     // Romantic feedback messages
     const messages = [
@@ -206,8 +204,6 @@ function handleCorrectAnswer() {
 // =================== HANDLE WRONG ANSWER ===================
 function handleWrongAnswer() {
     streak = 0;
-    
-    selectedOption.classList.add('incorrect');
     
     // Teasing feedback messages
     const messages = [
@@ -283,7 +279,7 @@ function showCompletionScreen() {
     
     // Create completion screen
     const completionScreen = document.createElement('div');
-    completionScreen.className = 'completion-screen';
+    completionScreen.className = 'completion-screen active';
     completionScreen.innerHTML = `
         <div class="completion-content">
             <h2 class="completion-title">You Decoded My Heart! 💖</h2>
